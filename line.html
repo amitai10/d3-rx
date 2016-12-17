@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Line chart</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.4.0/d3.js"></script>
+    <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
+  </head>
+  <body>
+    <script>
+    var h = 500;
+    var w = 800;
+    var padding = 50
+
+    var svg = d3.select("body")
+      .append("svg")
+      .attrs({
+        height: h,
+        width: w + padding,
+        padding: padding
+      });
+
+    var data = [
+      {
+        date: new Date('2016-12-01'),
+        value: 6
+      },
+      {
+        date: new Date('2016-12-02'),
+        value: 1
+      },
+      {
+        date: new Date('2016-12-03'),
+        value: 3
+      },
+      {
+        date: new Date('2016-12-04'),
+        value: 2
+      },
+      {
+        date: new Date('2016-12-06'),
+        value: 8
+      },
+      {
+        date: new Date('2016-12-07'),
+        value: 1
+      }
+
+    ];
+
+    var minDate = data[0].date;
+    var maxDate = data[data.length - 1].date;
+    var xScale = d3.scaleTime()
+      .domain([minDate, maxDate])
+      .range([0, w - padding]);
+
+    svg.append("g")
+        .attr("class", "x-axis axis")
+        .attr("transform", "translate(0, " + h + ")")
+        .call(d3.axisBottom(xScale))
+        // .ticks(d3.time.day, 1)
+        // .tickFormat(d3.time.format('%a'));
+
+    var yScale = d3.scaleLinear()
+      .domain([0, 10])
+      .range([h - padding, padding]);
+
+    svg.append("g")
+        .attr("class", "axis")
+        .call(d3.axisLeft(yScale).ticks(5));
+
+    var line = d3.line()
+      .x(function(d, i) {
+        return xScale(d.date) + padding;
+      })
+      .y(function(d) {
+        return yScale(d.value);
+      })
+
+    svg.append("path")
+      .attr({
+        d: line(data),
+        'class': 'myline',
+        'fill': 'none',
+        'stroke': 'black',
+        'stroke-width': 2
+      })
+    </script>
+  </body>
+</html>

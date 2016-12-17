@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Rect chart</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.4.0/d3.js"></script>
+    <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
+</head>
+
+<body>
+    <script>
+        var w = 800, h = 500, barWidth = 50, space = 2, margin = 40;
+        var data = [1, 2, 5, 3, 2, 4, 3, 2, 1, 5];
+
+        var svg = d3.select("body")
+            .append("svg")
+            .attrs({
+              width: w + margin*2,
+              height: h + margin*2,
+            })
+            .append("g")
+            .attr("transform", "translate(" + margin + "," + margin + ")");
+
+        var yScale = d3.scaleLinear()
+            .domain([0, 5])
+            .range([h, 0]);
+
+        svg.append("g")
+            .attr("class", "axis")
+            .call(d3.axisLeft(yScale).ticks(5));
+
+        let xScale = d3.scaleBand()
+            .domain(d3.range(0, data.length))
+            .range([0, data.length * (barWidth + space)]);
+
+        svg.append("g")
+            .attr("class", "x-axis axis")
+            .attr("transform", "translate(0, " + h + ")")
+            .call(d3.axisBottom(xScale));
+
+        svg.selectAll("rect")
+            .data(data)
+            .enter()
+            .append("rect")
+            .attrs({
+                x: function(d, i) { return i * (barWidth + space) + space },
+                y: function(d) { return yScale(d) },
+                width: barWidth,
+                height: function(d) { return h - yScale(d); }
+            });
+    </script>
+</body>
+
+</html>

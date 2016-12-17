@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Rect chart</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.4.0/d3.js"></script>
+    <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
+</head>
+<body>
+    <script>
+        var w = 800,h = 500, barWidth = 50, space = 2
+        var data = [150, 100, 200, 300, 150, 100];
+        var svg = d3.select("body")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h);
+        svg.selectAll("rect")
+            .data(data)
+            .enter()
+            .append("rect")
+            .attrs({
+              x: function(d, i) { return i * (barWidth + space) },
+              y: function(d) { return h - d; },
+              width: barWidth,
+              height: function(d, i) { return d; }});
+    </script>
+</body>
+
+</html>
