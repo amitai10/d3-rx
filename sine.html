@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Sine wave</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.4.0/d3.js"></script>
+    <script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/4.1.0/rx.all.js"></script>
+</head>
+<style media="screen">
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: grey;
+        stroke-width: 1;
+        shape-rendering: crispEdges;
+    }
+    .myline {
+        fill: none;
+        stroke: steelblue;
+        stroke-width: 2px;
+    }
+</style>
+
+<body>
+    <button id="start">Start</button>
+    <button id="stop">Stop</button>
+    <script>
+        var w = 500, h = 200, margin = 40;
+        updates = [];
+
+        var pauser = new Rx.Subject();
+        var counter = Rx.Observable.interval(100)
+            .pausable(pauser)
+            .map(function(i) {
+                return i;
+            })
+
+        counter.subscribe(function(response) {
+            var value = Math.sin(response / 10);
+
+            updates.push({
+                date: new Date(),
+                value: value,
+            });
+
+            if (updates.length > 200) {
+                updates.shift();
+            }
+            update(updates);
+        });
+
+        pauser.onNext(true);
+
+        d3.select("#start").on("click", function() {
+            console.log("start");
+            pauser.onNext(true);
+        })
+
+        d3.select("#stop").on("click", function() {
+            console.log("stop");
+            pauser.onNext(false);
+        })
+
+        var svg = d3.select("body")
+            .append("svg")
+            .attrs({
+                width: w + margin * 2,
+                height: h + margin * 2,
+            })
+            .append("g")
+            .attr("transform", "translate(" + margin + "," + margin + ")");
+
+
+        var x = d3.scaleTime()
+            .domain([new Date(), new Date()])
+            .range([0, w]);
+
+        svg.append("g")
+            .attr("class", "x-axis axis")
+            .attr("transform", "translate(0 , " + (h / 2) + ")")
+            .call(d3.axisBottom(x));
+
+        var y = d3.scaleLinear()
+            .domain([-1, 1])
+            .range([h, 0]);
+
+        svg.append("g")
+            .attr("class", "axis")
+            .call(d3.axisLeft(y));
+
+        var line = d3.line()
+            .x(function(d, i) {
+                return x(d.date);
+            })
+            .y(function(d) {
+                return y(d.value);
+            })
+
+        svg.append("path")
+            .attr("class", "myline")
+
+        function update(data) {
+            var minDate = data[0].date;
+            var maxDate = data[data.length - 1].date;
+            x = d3.scaleTime()
+                .domain([minDate, maxDate])
+                .range([0, w]);
+
+            svg.selectAll("g.x-axis").call(d3.axisBottom(x));
+
+            svg.selectAll(".myline")
+                .transition()
+                .attr("d", line(data));
+        }
+    </script>
+</body>
+
+</html>

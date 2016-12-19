@@ -1,12 +1,12 @@
 # Dynamic Data visualization with D3 and Rx - part 1
 
-D3 is a javascript library for data visualisation. RxJs is a reactive programing model that allows to compose asynchronous stream of data.
+D3 is a javascript library for data visualization. RxJs is a reactive programing model that allows to compose asynchronous stream of data.
 Anyone of those library are is very powerful. Together their power twice itself and can be used to build incredible things.
 
-In this blog post I will demonstrate  how to build a dynamic data visualisation with D3 and Rx. I will build a dynamic line chart that its data will be received from Rx, and be visualized by D3. In the first part I’ll make an introduction to D3. An introduction to RxJS can be found [here](https://www.spectory.com/blog/An%20Introduction%20to%20RxJS)
+In this blog post I will demonstrate  how to build a dynamic data visualization with D3 and Rx. I will build a dynamic line chart that its data will be received from Rx, and be visualized by D3. In the first part I’ll make an introduction to D3. An introduction to RxJS can be found [here](https://www.spectory.com/blog/An%20Introduction%20to%20RxJS)
 
 ## D3
-D3 is a JavaScript for creating data visualisations.
+D3 is a JavaScript for creating data visualizations.
 D3 provide the following capabilities:
 
 - Creating graphic element.
@@ -320,4 +320,4 @@ The code can be found in [https://github.com/amitai10/d3-rx](https://github.com/
 
 ## References
 - Interactive Data Visualization for the Web - Scott Murray
-- [https://d3js.org/]
+- https://d3js.org/
