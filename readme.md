@@ -316,6 +316,8 @@ In order to draw the line I used d3.line() with two functions, x and y, each ret
 
 That’s it for this part. In the next part I will show how to use D3 with Rx to create dynamic charts.
 
+The second part is [here](https://github.com/amitai10/d3-rx/blob/master/part2.md)
+
 The code can be found in [https://github.com/amitai10/d3-rx](https://github.com/amitai10/d3-rx)
 
 ## References
